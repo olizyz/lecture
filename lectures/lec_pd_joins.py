@@ -61,13 +61,13 @@ df = pd.DataFrame({'close': ser, 'bday': bday})
 #   Review: The operator "+" behaves differently depending on the operands
 # ---------------------------------------------------------------------------- 
 # Simple sums with integers
-print(1 + 1)              # --> 2
+# print(1 + 1)              # --> 2
 
 # String concatenation
-print('1' + '1')          # --> '11'
+# print('1' + '1')          # --> '11'
 
 # List concatenation
-print([1] + [2, 3])       # --> [1, 2, 3]
+# print([1] + [2, 3])       # --> [1, 2, 3]
 
 
 # ---------------------------------------------------------------------------- 
@@ -88,8 +88,8 @@ print([1] + [2, 3])       # --> [1, 2, 3]
 
 
 # Adding an integer to a series of floats
-new_ser  = '?'
-#print(new_ser) 
+new_ser  = ser + 1
+print(new_ser)
 
 # Output:
 #  2020-01-02    8.16
@@ -110,9 +110,9 @@ new_ser  = '?'
 #new_ser = ser + '1'  # --> Exception
 
 # We can add a string to a series containing strings
-s0  = '?'
-#s1 = s0 + '1' 
-#print(s1) 
+s0 = pd.Series(['1', '2', '3'])
+s1 = s0 + '1'
+# print(s1)
 
 # Output:
 #  0    11
@@ -125,7 +125,7 @@ s0  = '?'
 #  Adding a series to another
 # ----------------------------------------------------------------------------
 
-#print(ser) 
+# print(ser)
 # Output:
 #  2020-01-02    7.16
 #  2020-01-03    7.19
@@ -142,7 +142,7 @@ s0  = '?'
 
 # Summing two series with the same index
 # (obviously, adding a series to itsef will do that...)
-#print(ser + ser) 
+# print(ser + ser)
 
 # Output:
 #  2020-01-02    14.32
@@ -159,7 +159,8 @@ s0  = '?'
 
 # Summing `ser` to the subset ser[:-1]
 # Note how the last price is not summed
-#print(ser + ser[:-1]) 
+# print(ser[:-1])
+# print(ser + ser[:-1])
 
 # Returns::
 #  2020-01-02    14.32
@@ -176,14 +177,14 @@ s0  = '?'
 
 # What happens when there are no common indexes?
 # Create another series
-s2  = '?'
-#print(s2) 
+s2  = pd.Series([1,2], index=['2900-01-01', '2900-01-02'])
+# print(s2)
 # Output:
 #   2900-01-01    1
 #   2900-01-02    2
 #   dtype: int64
 
-#print(ser + s2) 
+# print(ser + s2)
 
 # Output::
 #  2020-01-02   NaN
@@ -221,15 +222,15 @@ s2  = '?'
 
 # This will be a dataframe with just one column 'bday'
 # (Note the column argument is a list of one element)
-df2  = '?'
-#print(df2) 
+df2  = df.iloc[1:3, [1]]
+# print(df2)
 
 # Output:
 #              bday
 #  2020-01-03     2
 #  2020-01-06     3
 
-#print(df + df2) 
+# print(df2 + df)
 
 # Output:
 #              bday  close
@@ -248,10 +249,10 @@ df2  = '?'
 #   Operations between dataframes and series
 # ----------------------------------------------------------------------------
 # This is a series of 1, indexed by dates
-ones_by_dates  = '?'
+ones_by_dates = pd.Series(1, index=dates)
 
 # In:
-#print(ones_by_dates) 
+# print(ones_by_dates)
 
 # Output:
 #  2020-01-02    1
@@ -267,10 +268,10 @@ ones_by_dates  = '?'
 #  dtype: int64
 
 # This is a series of 1, indexed by the columns of df
-ones_by_cols  = '?'
+ones_by_cols  = pd.Series(1, index=['bday', 'close'])
 
 # In:
-#print(ones_by_cols) 
+# print(ones_by_cols)
 
 # Output:
 #  bday     1
@@ -278,7 +279,7 @@ ones_by_cols  = '?'
 #  dtype: int64
 
 # This will produce a dataframe of NaN
-#print(df + ones_by_dates) 
+# print(df + ones_by_dates)
 
 # Output:
 #  2020-01-02  2020-01-03  2020-01-06  2020-01-07  2020-01-08  2020-01-09  2020-01-10  2020-01-13  2020-01-14  2020-01-15  bday  close
@@ -293,9 +294,9 @@ ones_by_cols  = '?'
 #  2020-01-14         NaN         NaN         NaN         NaN         NaN         NaN         NaN         NaN         NaN         NaN   NaN    NaN
 #  2020-01-15         NaN         NaN         NaN         NaN         NaN         NaN         NaN         NaN         NaN         NaN   NaN    NaN
 
-
+# print(df)
 # This will add one to each column
-#print(df + ones_by_cols) 
+# print(df + ones_by_cols)
 
 # Output:
 #              bday  close
@@ -325,12 +326,12 @@ ones_by_cols  = '?'
 # | 2   | L2 |
 # | 3   | L3 |
 
-#left = pd.DataFrame(
-#        data=[('L1'), ('L2'), ('L3')],
-#        index=[1,2,3],
-#        columns=['L'],
-#        )
-#print(left)
+left = pd.DataFrame(
+       data=[('L1'), ('L2'), ('L3')],
+       index=[1,2,3],
+       columns=['L'],
+       )
+print(left)
 #
 
 
@@ -342,12 +343,12 @@ ones_by_cols  = '?'
 # | 4   | R4 |
 # | 5   | R5 |
 
-#right = pd.DataFrame(
-#        data=[('R3'), ('R4'), ('R5')],
-#        index=[3,4,5],
-#        columns=['R'],
-#        )
-#print(right)
+right = pd.DataFrame(
+       data=[('R3'), ('R4'), ('R5')],
+       index=[3,4,5],
+       columns=['R'],
+       )
+print(right)
 #
 
 #   Understanding the different types of joins:
@@ -379,7 +380,7 @@ ones_by_cols  = '?'
 # | 2   | L2|               | 4   | R4|           |2  | L2|NaN|
 # | 3   | L3|               | 5   | R5|           |3  | L3| R3|
 # 
-#print(left.join(right, how='left')) 
+print(left.join(right, how='left'))
 
 # - Right join: Keep all the idxs of the right table (Right)
 # 
@@ -389,7 +390,7 @@ ones_by_cols  = '?'
 # | 2   | L2 |              | 4   | R4 |          | 4   | NaN | R4 |
 # | 3   | L3 |              | 5   | R5 |          | 5   | NaN | R5 |
 # 
-#print(left.join(right, how='right')) 
+print(left.join(right, how='right'))
 
 # 
 # - Inner join: Keep only the idxs that exist in both left and right
@@ -400,7 +401,7 @@ ones_by_cols  = '?'
 # |2  | L2|               |4  | R4|           
 # |3  | L3|               |5  | R5|           
 # 
-#print(left.join(right, how='inner')) 
+print(left.join(right, how='inner'))
 
 # - Outer join: Keep all the idxs in left and right
 # 
@@ -411,4 +412,4 @@ ones_by_cols  = '?'
 # |3  | L3|               |5  | R5|           |3  | L3| R3|
 #                                             |4  |NaN| R4|
 #                                             |5  |NaN| R5|
-#print(left.join(right, how='outer')) 
+print(left.join(right, how='outer'))

@@ -43,11 +43,11 @@ data = {
 # Note: `pd.to_datetime` will return a `DatetimeIndex` instance if we pass it
 # a list
 data['date'] = pd.to_datetime(data['date'])
-#print(type(data['date'])) # --> <class 'pandas.core.indexes.datetimes.DatetimeIndex'>  
+# print(type(data['date'])) # --> <class 'pandas.core.indexes.datetimes.DatetimeIndex'>
 
 # Create the dataframe and set the column 'date' as the index
 df = pd.DataFrame(data=data).set_index('date')
-#print(df) 
+# print(df)
 
 # Output:
 #                               firm  action
@@ -60,7 +60,7 @@ df = pd.DataFrame(data=data).set_index('date')
 # 2020-11-18 11:07:44  Morgan Stanley     up
 # 2020-12-09 15:34:34       JP Morgan   main
 
-#df.info() 
+# df.info()
 
 # Output:
 # <class 'pandas.core.frame.DataFrame'>
@@ -79,13 +79,13 @@ df = pd.DataFrame(data=data).set_index('date')
 # ----------------------------------------------------------------------------
 
 ## will be a series with boolean values
-#cond = df.loc[:, 'action'] == 'up' # --> series with dtype: bool
-#print(cond) 
+cond = df.loc[:, 'action'] == 'up' # --> series with dtype: bool
+# print(cond)
 #
 ## We can use this series as an indexer:
 ## A series of booleans can be used to select rows that meet the criteria
-#res = df.loc[cond]
-#print(res)
+res = df.loc[cond]
+# print(res)
 #
 ## Output
 ##                               firm  action
@@ -95,20 +95,20 @@ df = pd.DataFrame(data=data).set_index('date')
 #
 #
 ## Get the underlying values of `cond` as an array
-#new_cond = cond.array
-#
+new_cond = cond.array
+# print(type(new_cond))
 ## This will produce the same output as above
-#res = df.loc[new_cond]
-#print(res)
+res = df.loc[new_cond]
+# print(res)
 #
 
 # Indexer not the same length as the dataframe
-#df.loc[cond[:-1]]   # --> raises an exception
+# df.loc[cond[:-1]]   # --> raises an exception
 
 # ----------------------------------------------------------------------------
 #   Using booleans to select rows and cols
 # ----------------------------------------------------------------------------
-#print(df.loc[:, [True, False]]) 
+# print(df.loc[:, [True, False]])
 
 # Output:
 #                                firm
@@ -121,48 +121,69 @@ df = pd.DataFrame(data=data).set_index('date')
 # 2020-11-18 11:07:44  Morgan Stanley
 # 2020-12-09 15:34:34       JP Morgan
 
-#cond = df.loc[:, 'action'] == 'up'
-#print(df.loc[cond, [False, True]])
+cond = df.loc[:, 'action'] == 'up'
+# print(df.loc[cond, [False, True]])
 #
-#print(df.isna())
+# print(df.isna())
 #
 
-#df.loc[df.isna()]  # --> exception
+# df.loc[df.isna()]  # --> exception
 
-#print(df[df.isna()]) 
+# print(df[df.isna()])
 
 
 # ----------------------------------------------------------------------------
 #   Using [] 
 # ----------------------------------------------------------------------------
 
-#cond = df.loc[:, 'action'] == 'up'
-#df['action'][cond] = "UP"
-#print(df)
+cond = df.loc[:, 'action'] == 'up'
+df['action'][cond] = "UP"
+# print(df)
 #
 ## Reverting...
-#cond = df.loc[:, 'action'] == 'UP'
-#df.loc[cond, 'action'] = 'up'
-#print(df)
+cond = df.loc[:, 'action'] == 'UP'
+# print(cond)
+df.loc[cond, 'action'] = 'up'
+# print(df)
 #
 #
-#new_df = df.copy()
-#cond = df.loc[:, 'action'] == 'up'
-#new_df.loc[cond] = 'UP' 
-#print(new_df)
+new_df = df.copy()
+cond = df.loc[:, 'action'] == 'up'
+# print(cond)
+new_df.loc[cond] = 'UP'
+# print(new_df)
 #
 #
 ## ----------------------------------------------------------------------------
 ##   Multiple criteria 
 ## ----------------------------------------------------------------------------
 ## Combine different criteria
-#crit = (df.loc[:, 'action'] == 'up') | (df.loc[:, 'action'] == 'down')
-#print(df.loc[crit])
+crit = (df.loc[:, 'action'] == 'up') | (df.loc[:, 'action'] == 'down')
+# print(crit)
+# print(df.loc[crit])
 #
 ## ----------------------------------------------------------------------------
 ##   Using the `str.contains` method
 ## ----------------------------------------------------------------------------
-#crit = df.loc[:, 'action'].str.contains('up|down')
-#print(df.loc[crit])
+crit = df.loc[:, 'action'].str.contains('up|down')
+# print(crit)
+# print(df.loc[crit])
 #
 #
+
+
+
+
+df = pd.DataFrame(
+    {
+        'col1': range(10),
+        'col2': range(10, 20)
+    }
+)
+print(df)
+
+crit = (df.loc[:, 'col2'] % 2 == 0) & (df.loc[:, 'col2'] % 3 == 0)
+# print(crit)
+df.loc[crit, 'col2'] = -1
+print(df)
+

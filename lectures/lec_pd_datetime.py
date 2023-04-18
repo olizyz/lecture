@@ -239,8 +239,49 @@ prc = pd.read_csv(CSVLOC, parse_dates=['Date'], index_col='Date')
 # Make sure the dataframe is sorted
 prc.sort_index(inplace=True)
 
+
 # compute returns
 rets = prc.loc[:, 'Close'].pct_change()
-print(rets)
+# print(rets)
+
+
+
+
+
+
+
+tot_ret = 1.5
+n = 400
+start = '2010-01-01'
+daily_yield = tot_ret ** (1.0 / n) - 1
+# print(daily_yield)
+
+# This is what the function `get_ann_ret` should return
+expected_res = tot_ret ** (252. / n) - 1
+
+# Create the index
+# This will add `n` days to `start`
+n_days = pd.to_timedelta([x for x in range(n)], unit='day')
+dt_idx = pd.to_datetime(start) + n_days
+
+# Get the end date
+end = dt_idx.max().strftime('%Y-%m-%d')
+
+# So, `end` - `start` --> n days
+
+# Create a series with `n` copies of `daily_yield`
+ser = pd.Series([daily_yield] * n, index=dt_idx)
+
+# Add days before `start` and after `end`
+dt_bef_idx = pd.to_datetime(start) + pd.to_timedelta([-3, -2, -1], unit='day')
+ser_before = pd.Series([-99] * 3, index=dt_bef_idx)
+
+dt_after_idx = pd.to_datetime(end) + pd.to_timedelta([1, 2, 3], unit='day')
+ser_after = pd.Series([-99] * 3, index=dt_after_idx)
+
+# combine series
+ser = pd.concat([ser_before, ser, ser_after])
+
+
 
 

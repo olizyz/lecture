@@ -47,8 +47,8 @@ data['date'] = pd.to_datetime(data['date'])
 # Create the dataframe and set the column 'date' as the index
 df = pd.DataFrame(data=data).set_index('date') 
 
-#print(df)
-#df.info()
+# print(df)
+# df.info()
 #
 
 # Output:
@@ -65,16 +65,16 @@ df = pd.DataFrame(data=data).set_index('date')
 # ---------------------------------------------------------------------------- 
 #   Creating groupby objects
 # ---------------------------------------------------------------------------- 
-groups  = '?'
+groups  = df.groupby(by='firm')
 
-#print(groups)
+# print(groups)
 #
 
 # Output:
 # <pandas.core.groupby.generic.DataFrameGroupBy object at 0x7f8463863640>
 
 
-#print(groups.groups) 
+print(groups.groups)
 
 # Output:
 # {'Deutsche Bank': DatetimeIndex(['2020-09-23 08:58:55', '2020-09-23 09:01:26',
@@ -89,7 +89,7 @@ groups  = '?'
 #   The elements of groups.groups
 # ---------------------------------------------------------------------------- 
 
-#for firm, idx in groups.groups.items():
+# for firm, idx in groups.groups.items():
 #    print(f"Data for Firm == {firm}:")
 #    print("----------------------------------------")
 #    print(df.loc[idx])
@@ -134,16 +134,16 @@ groups  = '?'
 #   Applying functions to individual groups
 # ---------------------------------------------------------------------------- 
 
-#for firm, idx in groups.groups.items():
+# for firm, idx in groups.groups.items():
 #    nobs = len(df.loc[idx])
 #    print(f"Number of obs for Firm == {firm} is {nobs}")
-#
+
 
 # Using the apply method
-res  = '?'
+res  = groups.apply(len)
 
-#print(res)
-#print(type(res))
+# print(res)
+# print(type(res))
 #
 
 
@@ -152,7 +152,7 @@ res  = '?'
 # ----------------------------------------------------------------------------
 # using a loop
 
-#for firm, idx in groups.groups.items():
+# for firm, idx in groups.groups.items():
 #    print(f"pd.isna applied to df[df.firm=='{firm}']:")
 #    print("----------------------------------------")
 #    print(pd.isna(df.loc[idx]))
@@ -162,8 +162,8 @@ res  = '?'
 
 
 # using the apply method
-res  = '?'
-#print(res) 
+res  = groups.apply(pd.isna)
+# print(res)
 
 # Output:
 # 
@@ -190,7 +190,7 @@ def get_last(df):
 
 #
 #
-#for firm, idx in groups.groups.items():
+# for firm, idx in groups.groups.items():
 #    print(f"get_last applied to df[df.firm=='{firm}']:")
 #    print("----------------------------------------")
 #    print(get_last(df.loc[idx]))
@@ -198,8 +198,8 @@ def get_last(df):
 #    print("")
 #
 
-res  = '?'
-#print(res) 
+res  = groups.apply(get_last)
+# print(res)
 
 
 # Some group by operations are so common that Pandas implements them directly
@@ -210,45 +210,45 @@ res  = '?'
 # - `GroupBy.last`: select last of observation in each group
 
 # The dataframe 
-#print(df) 
+# print(df)
 
 
 # Count the number of observations inside each group:
 # (includes missing values if any)
-#print(df.groupby('firm').size()) 
+# print(df.groupby('firm').size())
 
 # Select last obs by group 
-#print(df.groupby('firm').last()) 
+# print(df.groupby('firm').last())
 
 
 # ----------------------------------------------------------------------------
 #   Grouping by multiple columns 
 # ----------------------------------------------------------------------------
 # Create the 'event_date' column
-#df.loc[:, 'event_date'] = df.index.strftime('%Y-%m-%d') 
-#print(df) 
+df.loc[:, 'event_date'] = df.index.strftime('%Y-%m-%d')
+# print(df)
 
 # Split the data into groups
-#groups = df.groupby(['event_date', 'firm']) 
-
+groups = df.groupby(['event_date', 'firm'])
+# print(groups.groups)
 # Select the most recent obs for each group
-#res = groups.last() 
-#print(res) 
+res = groups.last()
+# print(res)
 
 # The index of the new series is a MultiIndex
-#print(res.index) 
+# print(res.index)
 
 
 # Converting the index to columns
-#res.reset_index(inplace=True) 
-#print(res) 
+res.reset_index(inplace=True)
+# print(res)
 
 
 # ----------------------------------------------------------------------------
 #   The DataFrame.apply method
 # ----------------------------------------------------------------------------
 # Applying `len` to df
-#print(df) 
+# print(df)
 # Output:
 #                                firm action  event_date
 # date
@@ -261,8 +261,8 @@ res  = '?'
 # 2020-12-09 15:34:34       JP Morgan   main  2020-12-09
 
 # By default, DataFrame.apply will apply the function to each column of the data frame
-res  = '?'
-#print(res) 
+# res  = df.apply(len)
+# print(res)
 
 
 # Output:
@@ -272,8 +272,8 @@ res  = '?'
 # dtype: int64
 
 # To apply the function to each row, set axis=1
-res  = '?'
-#print(res) 
+res  = df.apply(len, axis=1)
+# print(res)
 
 
 # Output:
@@ -292,13 +292,13 @@ def first_two(ser):
     return ser.iloc[0:2]
 
 # Apply to each columns
-res  = '?'
-#print(res) 
+res  = df.apply(first_two, axis=0)
+print(res)
 
 
 # Apply to each row
-res  = '?'
-#print(res) 
+res  = df.apply(first_two, axis=1)
+print(res)
 
 
 # ----------------------------------------------------------------------------
